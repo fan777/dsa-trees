@@ -63,8 +63,30 @@ class BinaryTree {
    * The path doesn't need to start at the root, but you can't visit a node more than once. */
 
   maxSum() {
-
+    let maxBest = 0
+    function helper(current, maxLeft = 0, maxRight = 0) {
+      if (!current) return 0;
+      if (current.left !== null || current.right !== null) {
+        maxLeft = current.left !== null ? helper(current.left) : 0;
+        maxRight = current.right !== null ? helper(current.right) : 0;
+      }
+      let currSum = maxLeft + maxRight + current.val;
+      maxBest = maxBest > currSum ? maxBest : currSum;
+      return Math.max(maxLeft, maxRight) + current.val;;
+    }
+    helper(this.root)
+    return maxBest;
   }
+
+  // if (current.left === null && current.right === null) {
+  //   return current.val;
+  // } else {
+  //   let maxLeft = current.left !== null ? helper(current.left) : 0;
+  //   let maxRight = current.right !== null ? helper(current.right) : 0;
+  //   return Math.max(maxLeft, maxRight) + current.val;
+  // }
+  // if (current.left === null && current.right === null) {
+  //   return current.val;
 
   /** nextLarger(lowerBound): return the smallest value in the tree
    * which is larger than lowerBound. Return null if no such value exists. */
@@ -74,9 +96,9 @@ class BinaryTree {
     function helper(current) {
       if (!current) return currLow;
       if (current.val > lowerBound) {
-        currLow = currLow === null ? current.val :
-          current.val < currLow ? current.val :
-            currLow;
+        currLow = currLow === null
+          ? current.val : current.val < currLow
+            ? current.val : currLow;
       }
       if (current.left !== null) helper(current.left);
       if (current.right !== null) helper(current.right);
