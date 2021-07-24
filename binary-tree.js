@@ -17,14 +17,46 @@ class BinaryTree {
    * the length of the shortest path from the root to a leaf. */
 
   minDepth() {
-
+    let depth = 0;
+    function helper(current, currDepth = 0) {
+      if (!current) return;
+      currDepth++;
+      if (current.left === null && current.right === null) {
+        if (depth === 0) depth = currDepth;
+        else depth = currDepth < depth ? currDepth : depth;
+      } else {
+        if (current.left !== null)
+          helper(current.left, currDepth);
+        if (current.right !== null)
+          helper(current.right, currDepth);
+        currDepth--;
+      }
+    }
+    helper(this.root);
+    return depth;
   }
 
   /** maxDepth(): return the maximum depth of the tree -- that is,
    * the length of the longest path from the root to a leaf. */
 
   maxDepth() {
-
+    let depth = 0;
+    function helper(current, currDepth = 0) {
+      if (!current) return;
+      currDepth++;
+      if (current.left === null && current.right === null) {
+        if (depth === 0) depth = currDepth;
+        else depth = currDepth > depth ? currDepth : depth;
+      } else {
+        if (current.left !== null)
+          helper(current.left, currDepth);
+        if (current.right !== null)
+          helper(current.right, currDepth);
+        currDepth--;
+      }
+    }
+    helper(this.root);
+    return depth;
   }
 
   /** maxSum(): return the maximum sum you can obtain by traveling along a path in the tree.
@@ -38,7 +70,19 @@ class BinaryTree {
    * which is larger than lowerBound. Return null if no such value exists. */
 
   nextLarger(lowerBound) {
-
+    let currLow = null;
+    function helper(current) {
+      if (!current) return currLow;
+      if (current.val > lowerBound) {
+        currLow = currLow === null ? current.val :
+          current.val < currLow ? current.val :
+            currLow;
+      }
+      if (current.left !== null) helper(current.left);
+      if (current.right !== null) helper(current.right);
+    }
+    helper(this.root)
+    return currLow
   }
 
   /** Further study!
@@ -68,7 +112,7 @@ class BinaryTree {
    * of two nodes in a binary tree. */
 
   lowestCommonAncestor(node1, node2) {
-    
+
   }
 }
 
